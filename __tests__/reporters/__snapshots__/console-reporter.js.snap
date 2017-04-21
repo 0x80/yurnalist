@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConsoleReporter.activity 1`] = `
+Object {
+  "stderr": "[1G⠁ [0K[2K[1G",
+  "stdout": "",
+}
+`;
+
+exports[`ConsoleReporter.command 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "[2K[1G[2m$ foobar[22m",
+}
+`;
+
+exports[`ConsoleReporter.error 1`] = `
+Object {
+  "stderr": "[2K[1G[31merror[39m foobar",
+  "stdout": "",
+}
+`;
+
+exports[`ConsoleReporter.footer 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "[2K[1G✨  Done in 0.00s.",
+}
+`;
+
+exports[`ConsoleReporter.footer 2`] = `
+Object {
+  "stderr": "",
+  "stdout": "[2K[1G✨  Done in 0.00s. Peak memory usage 0.00MB.",
+}
+`;
+
+exports[`ConsoleReporter.header 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "[2K[1G[1myarn foobar v0.0.0[22m",
+}
+`;
+
+exports[`ConsoleReporter.info 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "[2K[1G[34minfo[39m foobar",
+}
+`;
+
+exports[`ConsoleReporter.log 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "[2K[1Gfoobar",
+}
+`;
+
+exports[`ConsoleReporter.progress 1`] = `
+Object {
+  "stderr": "[2K[1G[1G░░ 0/2[1G█░ 1/2[2K[1G",
+  "stdout": "",
+}
+`;
+
+exports[`ConsoleReporter.progress 2`] = `
+Object {
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`ConsoleReporter.progress 3`] = `
+Object {
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`ConsoleReporter.progress 4`] = `
+Object {
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`ConsoleReporter.select 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "[2K[1G[34minfo[39m Ayo?
+[2K[1G  [2m1)[22m foo
+[2K[1G  [2m2)[22m bar
+[1G[0JSelect one: [13G1",
+}
+`;
+
+exports[`ConsoleReporter.step 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "[2K[1G[2m[1/5][22m foboar...",
+}
+`;
+
+exports[`ConsoleReporter.success 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "[2K[1G[32msuccess[39m foobar",
+}
+`;
+
+exports[`ConsoleReporter.tree 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "├─ dep1
+├─ dep2
+│  ├─ dep2.1
+│  │  ├─ dep2.1.1
+│  │  └─ dep2.1.2
+│  └─ dep2.2
+│     ├─ dep2.2.1
+│     └─ dep2.2.2
+└─ dep3
+   ├─ dep3.1
+   └─ dep3.2",
+}
+`;
+
+exports[`ConsoleReporter.warn 1`] = `
+Object {
+  "stderr": "[2K[1G[33mwarning[39m foobar",
+  "stdout": "",
+}
+`;
+
+exports[`ProgressBar 1`] = `"[2K[1G[1G░░ 0/2"`;
+
+exports[`ProgressBar 2`] = `"[2K[1G[1G░░ 0/2[1G█░ 1/2"`;
+
+exports[`ProgressBar 3`] = `"[2K[1G[1G░░ 0/2[1G█░ 1/2[2K[1G[1G██ 2/2"`;
+
+exports[`Spinner 1`] = `"[1G⠁ [0K"`;
+
+exports[`Spinner 2`] = `"[1G⠁ [0K[1G⠂ foo[0K"`;
+
+exports[`Spinner 3`] = `"[1G⠁ [0K[1G⠂ foo[0K[1G⠄ bar[0K"`;
+
+exports[`Spinner 4`] = `"[1G⠁ [0K[1G⠂ foo[0K[1G⠄ bar[0K[2K[1G"`;

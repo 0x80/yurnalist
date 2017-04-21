@@ -1,0 +1,10 @@
+__tests__/fixtures
+lib
+lib-legacy
+node_modules
+flow-typed
+coverage
+gulpfile.js
+scripts
+updates
+dist

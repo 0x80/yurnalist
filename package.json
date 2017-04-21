@@ -54,9 +54,6 @@
   },
   "scripts": {
     "test": "npm run lint && npm run test-only",
-    "test-ci": "npm run build && npm run test-only",
-    "build": "gulp build",
-    "watch": "gulp watch",
     "test-only": "jest --coverage --verbose",
     "lint": "eslint . && flow check"
   },

@@ -17,14 +17,10 @@ async function chooseLife() {
 
   switch (answer) {
     case 'blue':
-      report.success(
-        'You choose knowledge, freedom and the sometimes painful truth of reality'
-      );
+      report.success('You choose knowledge, freedom and the sometimes painful truth of reality');
       break;
     case 'red':
-      report.success(
-        'You choose falsehood, security and the blissful ignorance of illusion'
-      );
+      report.success('You choose falsehood, security and the blissful ignorance of illusion');
       break;
   }
 }

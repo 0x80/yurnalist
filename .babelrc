@@ -1,3 +1,18 @@
+// {
+//   "only": "*.js",
+//   "presets": [
+//     ["env", {
+//       "targets": {
+//         "node": 4
+//       }
+//     }],
+//     "stage-0"
+//   ],
+//   "plugins": [
+//     "transform-flow-strip-types"
+//   ]
+// }
+
 {
   "only": "*.js",
   "env": {
@@ -5,7 +20,10 @@
       "presets": ["es2015-node4"],
       "plugins": [
         ["transform-inline-imports-commonjs"],
-        ["transform-runtime", { "polyfill": true, "regenerator": false }]
+        ["transform-runtime", {
+          "polyfill": true,
+          "regenerator": false
+        }]
       ]
     },
     "test": {
@@ -18,6 +36,9 @@
   "presets": ["node5", "stage-0"],
   "plugins": [
     ["transform-inline-imports-commonjs"],
-    ["transform-runtime", { "polyfill": false, "regenerator": true }]
+    ["transform-runtime", {
+      "polyfill": false,
+      "regenerator": true
+    }]
   ]
 }

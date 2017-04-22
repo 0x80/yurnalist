@@ -18,7 +18,7 @@ export default function<T>(
   interceptor: Interceptor<T>,
   prepare?: (reporter: Reporter) => any,
 ): (callback: MockCallback) => Promise<T> {
-  return async function (callback: MockCallback): * {
+  return async function(callback: MockCallback): * {
     const data: MockData = {
       stderr: '',
       stdout: '',

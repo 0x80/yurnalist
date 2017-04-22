@@ -1,8 +1,8 @@
 {
   "name": "console-reporter",
   "version": "1.0.0",
-  "description": "Elegant console output inspired by Yarn",
-  "main": "src/index.js",
+  "description": "Elegant console output, borrowed from Yarn",
+  "main": "dist/index.js",
   "repository": "https://github.com/0x80/console-reporter",
   "author": "Thijs Koerselman",
   "license": "MIT",
@@ -31,8 +31,10 @@
     "babel-jest": "^19.0.0",
     "babel-loader": "^6.2.5",
     "babel-plugin-transform-es2015-typeof-symbol": "^6.8.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-plugin-transform-inline-imports-commonjs": "^1.0.0",
     "babel-plugin-transform-runtime": "^6.4.3",
+    "babel-preset-env": "^1.4.0",
     "babel-preset-es2015-node4": "^2.1.0",
     "babel-preset-node5": "^10.2.0",
     "babel-preset-stage-0": "^6.0.0",
@@ -55,7 +57,10 @@
   "scripts": {
     "test": "npm run lint && npm run test-only",
     "test-only": "jest --coverage --verbose",
-    "lint": "eslint . && flow check"
+    "lint": "eslint . && flow check",
+    "build": "babel src --out-dir dist",
+    "clean": "rimraf dist",
+    "prepublish": "npm run clean && npm run build"
   },
   "jest": {
     "collectCoverageFrom": [

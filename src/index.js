@@ -2,21 +2,16 @@
 
 import ConsoleReporter from './reporters/console/console-reporter';
 
-type ReporterOptions = {
-  emoji: boolean,
-  verbose: boolean,
-  progress: boolean,
-  silent: boolean
-};
+import type ReporterOptions from './reporters/base-reporter';
 
-const defaultConfig = {
+const defaultOptions = {
   emoji: true,
   verbose: true,
   progress: true,
   silent: false,
 };
 
-export function createReporter(options: ReporterOptions): ConsoleReporter {
+function createReporter(options: ReporterOptions): ConsoleReporter {
   const reporter = new ConsoleReporter({
     emoji: options.emoji &&
       process.stdout.isTTY &&
@@ -31,4 +26,43 @@ export function createReporter(options: ReporterOptions): ConsoleReporter {
   return reporter;
 }
 
-export default createReporter(defaultConfig);
+const reporter = createReporter(defaultOptions);
+
+function bindMethods(methods: string[], instance): Object {
+  return methods.reduce((result, name) => {
+    try {
+      result[name] = instance[name].bind(instance);
+      return result;
+    } catch (e) {
+      throw new ReferenceError(`Unable to bind method: ${name}`);
+    }
+  }, {});
+}
+
+const boundMethods = bindMethods(
+  [
+    'table',
+    'step',
+    'inspect',
+    'list',
+    'header',
+    'footer',
+    'log',
+    'success',
+    'error',
+    'info',
+    'command',
+    'warn',
+    'question',
+    'tree',
+    'activitySet',
+    'activity',
+    'select',
+    'progress',
+    'lang',
+    'close',
+  ],
+  reporter,
+);
+
+module.exports = Object.assign({}, boundMethods, {createReporter});

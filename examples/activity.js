@@ -2,14 +2,12 @@
 const report = require('../dist');
 /* eslint-disable flowtype/require-return-type */
 
-// report.activity()
-
 function doSomeWork(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function waitForIt(steps) {
-  const spinner = report.activity(steps);
+async function waitForIt() {
+  const spinner = report.activity();
 
   report.info('This is going to take a little while');
 
@@ -28,7 +26,6 @@ async function waitForIt(steps) {
   report.success('Done!');
 }
 
-waitForIt(24);
-report.close();
+waitForIt();
 
 report.close();

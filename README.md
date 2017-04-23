@@ -10,11 +10,11 @@ User input for questions and selection is also available.
 
 ## Install
 ```shell
-$ yarn add yurnalist@alpha
+$ yarn add yurnalist
 ```
 Or if your prefer NPM
 ```shell
-$ npm install yurnalist@alpha
+$ npm install yurnalist
 ```
 
 ## How to use

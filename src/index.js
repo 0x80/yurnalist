@@ -2,17 +2,17 @@
 
 import ConsoleReporter from './reporters/console/console-reporter';
 
-import type ReporterOptions from './reporters/base-reporter';
+import type {ReporterOptions} from './reporters/base-reporter';
 
 const defaultOptions = {
   emoji: true,
 };
 
-function createReporter(options: ReporterOptions): ConsoleReporter {
+function createReporter(options?: ReporterOptions = {}): ConsoleReporter {
   const reporter = new ConsoleReporter({
     emoji: options.emoji && process.stdout.isTTY && process.platform === 'darwin',
     verbose: options.verbose,
-    noProgress: !options.progress,
+    noProgress: options.noProgress,
     isSilent: options.silent,
   });
 
@@ -26,6 +26,7 @@ const reporter = createReporter(defaultOptions);
 function bindMethods(methods: string[], instance): Object {
   return methods.reduce((result, name) => {
     try {
+      /* $FlowFixMe: Indexible signature not found */
       result[name] = instance[name].bind(instance);
       return result;
     } catch (e) {

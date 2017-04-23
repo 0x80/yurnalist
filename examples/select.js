@@ -26,5 +26,3 @@ async function chooseLife() {
 }
 
 chooseLife();
-
-report.close();

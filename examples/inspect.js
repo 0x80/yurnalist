@@ -14,5 +14,3 @@ const anObject = {
 anObject.nestedObject = Object.assign({}, anObject);
 
 report.inspect(anObject);
-
-report.close();

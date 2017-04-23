@@ -21,4 +21,3 @@ async function waitForIt(steps) {
 }
 
 waitForIt(24);
-report.close();

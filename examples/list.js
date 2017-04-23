@@ -15,5 +15,3 @@ const hints = {
 
 report.info('The same list with hints');
 report.list('dunno', someList, hints);
-
-report.close();

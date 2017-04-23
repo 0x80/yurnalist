@@ -7,6 +7,7 @@ An elegant console reporter, borrowed from [Yarn](https://yarnpkg.com).
   * [Features](#features)
 - [Install](#install)
 - [How to use](#how-to-use)
+- [Requirements](#requirements)
 - [Examples](#examples)
 - [API](#api)
   * [table](#table)
@@ -101,6 +102,9 @@ async function fetchSomething() {
 fetchSomething();
 
 ```
+
+## Requirements
+Node >= 4
 
 ## Examples
 Examples showing different API functions are found in [/examples](/examples). You can run them directly with node >= 7.6 (because of async/await syntax). For older versions you could use the `--harmony` flag, or otherwise Babel.

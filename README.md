@@ -1,6 +1,42 @@
 # Yurnalist
 The elegant console reporter, borrowed from [Yarn](https://yarnpkg.com).
 
+<!-- toc -->
+
+- [Introduction](#introduction)
+- [Install](#install)
+- [How to use](#how-to-use)
+- [Examples](#examples)
+- [API](#api)
+  * [table](#table)
+  * [step](#step)
+  * [inspect](#inspect)
+  * [list](#list)
+  * [header](#header)
+  * [footer](#footer)
+  * [log](#log)
+  * [success](#success)
+  * [error](#error)
+  * [info](#info)
+  * [command](#command)
+  * [warn](#warn)
+  * [question](#question)
+  * [tree](#tree)
+  * [activitySet](#activityset)
+  * [activity](#activity)
+  * [select](#select)
+  * [progress](#progress)
+  * [close](#close)
+  * [createReporter](#createreporter)
+- [Configuration](#configuration)
+  * [Options](#options)
+- [Language](#language)
+- [Emojis](#emojis)
+- [To Do](#to-do)
+- [Credits](#credits)
+
+<!-- tocstop -->
+
 ## Introduction
 Pretty console output makes people happy, and Yarn is doing a really nice job. Yurnalist isolates the part of Yarn responsible for handling the console and makes it available for standalone use in other Node.js commandline tools.
 
@@ -51,6 +87,16 @@ async function fetchSomething() {
 fetchSomething();
 
 ```
+
+## Examples
+Examples showing different API functions are found in [/examples](/examples). You can run them directly with node >= 7.6 (because of async/await syntax). For older versions you could use the `--harmony` flag, or otherwise Babel.
+
+To run the activity example:
+
+```shell
+$ node examples/activity.js
+```
+
 
 ## API
 Coming soon...
@@ -118,15 +164,6 @@ The peekMemoryCounter is disabled by default. If you enable it, you'll have to c
 Yarn uses a language file for certain messages. For example if you try to skip a required question, or when you pick an invalid item from a select. This language file is not yet exposed in the Yurnalist API. The only supported language is English, as it is in Yarn at the moment.
 
 I plan to make this configurable so that you can define your own messages in your own language .
-
-## Examples
-Examples showing different API functions are found in [/examples](/examples). You can run them directly with node >= 7.6 (because of async/await syntax). For older versions you could use the `--harmony` flag, or otherwise Babel.
-
-To run the activity example:
-
-```shell
-$ node examples/activity.js
-```
 
 ## Emojis
 You can use Emojis in your output. Yurnalist should disable them if they are not allowed in the application environment.

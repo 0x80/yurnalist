@@ -17,6 +17,7 @@
     "is-ci": "^1.0.10",
     "leven": "^2.0.0",
     "loud-rejection": "^1.2.0",
+    "markdown-toc": "^1.1.0",
     "minimatch": "^3.0.3",
     "node-emoji": "^1.0.4",
     "object-path": "^0.11.2",
@@ -61,7 +62,8 @@
     "build": "babel src --out-dir dist",
     "watch": "babel src --out-dir dist --watch",
     "clean": "rimraf dist",
-    "prepublish": "npm run clean && npm run build"
+    "prepublish": "npm run clean && npm run build",
+    "generate-toc": "markdown-toc -i README.md"
   },
   "jest": {
     "collectCoverageFrom": [

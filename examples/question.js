@@ -18,5 +18,3 @@ async function askQuestions() {
 }
 
 askQuestions();
-
-report.close();

@@ -26,5 +26,3 @@ async function fetchSomething() {
 }
 
 fetchSomething();
-
-report.close();

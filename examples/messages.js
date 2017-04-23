@@ -9,6 +9,4 @@ report.error(new Error('A message from an Error object'));
 report.success('Congratulations');
 report.command('echo "some command"');
 
-report.lang('savedNewDependencies', 12345);
-
-report.close();
+report.info(report.lang('savedNewDependencies', 53738));

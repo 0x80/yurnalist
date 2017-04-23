@@ -2,13 +2,25 @@
 
 import ConsoleReporter from './reporters/console/console-reporter';
 
-import type {ReporterOptions} from './reporters/base-reporter';
+import type {Stdout, Stdin} from './reporters/types.js';
+
+export type ApiReporterOptions = {
+  verbose?: boolean,
+  stdout?: Stdout,
+  stderr?: Stdout,
+  stdin?: Stdin,
+  emoji?: boolean,
+  noProgress?: boolean,
+  silent?: boolean,
+  peekMemoryCounter?: boolean
+};
 
 const defaultOptions = {
   emoji: true,
+  peekMemoryCounter: false,
 };
 
-function createReporter(options?: ReporterOptions = {}): ConsoleReporter {
+function createReporter(options?: ApiReporterOptions = {}): ConsoleReporter {
   const reporter = new ConsoleReporter({
     emoji: options.emoji && process.stdout.isTTY && process.platform === 'darwin',
     verbose: options.verbose,
@@ -16,7 +28,9 @@ function createReporter(options?: ReporterOptions = {}): ConsoleReporter {
     isSilent: options.silent,
   });
 
-  reporter.initPeakMemoryCounter();
+  if (options.peekMemoryCounter) {
+    reporter.initPeakMemoryCounter();
+  }
 
   return reporter;
 }

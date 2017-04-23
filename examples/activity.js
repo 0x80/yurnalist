@@ -16,7 +16,11 @@ async function fetchSomething() {
   spinner.tick('I am on it');
 
   try {
-    await doSomeWork(3000);
+    await doSomeWork(1000);
+    spinner.tick('Still busy');
+    await doSomeWork(1000);
+    spinner.tick('Almost there');
+    await doSomeWork(1000);
     report.success('Done!');
   } catch (err) {
     report.error(err);

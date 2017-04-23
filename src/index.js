@@ -6,9 +6,6 @@ import type ReporterOptions from './reporters/base-reporter';
 
 const defaultOptions = {
   emoji: true,
-  verbose: true,
-  progress: true,
-  silent: false,
 };
 
 function createReporter(options: ReporterOptions): ConsoleReporter {

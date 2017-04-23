@@ -1,6 +1,6 @@
 {
   "name": "yurnalist",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Elegant console output, borrowed from Yarn",
   "main": "dist/index.js",
   "repository": "https://github.com/0x80/yurnalist",

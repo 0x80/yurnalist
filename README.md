@@ -1,10 +1,10 @@
 # Yurnalist
-Elegant console output borrowed from Yarn.
+Elegant console output borrowed from [Yarn](https://yarnpkg.com).
 
 ## Introduction
-Nicely styled console output makes you happy. Yarn is doing a really nice job with that. Yurnalist extracts the part of Yarn responsible for that and makes it available for standalone use in any other Node.js commandline tools.
+Pretty console output makes you happy. Yarn is doing a really nice job with that. Yurnalist extracts the part of Yarn responsible for that and makes it available for standalone use in any other Node.js commandline tools.
 
-Yurnalist can be used to display many differnt things in the console besides simple messages, including activity spinners, processing steps, objects, lists, trees and tables.
+Yurnalist can be used to display many differnt things in the console besides simple messages, including progress bars, activity spinners, process steps, objects, lists, trees and tables.
 
 User input for questions and selection is also available.
 
@@ -119,6 +119,7 @@ Yarn uses a language file for certain messages. For example if you try to skip a
 Examples showing different API functions are found in [/examples](/examples). You can run them directly with node >= 7.6 (because of async/await syntax). For older versions you could use the `--harmony` flag, or otherwise Babel.
 
 To run the activity example:
+
 ```shell
 $ node examples/activity.js
 ```
@@ -126,5 +127,16 @@ $ node examples/activity.js
 ## Emojis
 You can use Emojis in your output. Yurnalist should disable them if they are not allowed in the application environment.
 
-[node-emoji](https://github.com/omnidan/node-emoji)
-[Cheat sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet/)
+Check:
+
+- [node-emoji](https://github.com/omnidan/node-emoji)
+- [Emoji cheat sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet/)
+
+## To Do
+Before the 1.0 release there is still some work to be done. You can find an overview in the [1.0 milestone](https://github.com/0x80/yurnalist/milestone/1).
+
+If you'd like to help out it is highly appreciated!
+
+## Credits
+Of course ❤️ and credits to all the contributers of [Yarn](https://yarnpkg.com). The ease with which I was able to extract this module from their codebase is proving some awesome engineering skills.
+

@@ -62,7 +62,7 @@
     "build": "babel src --out-dir dist",
     "watch": "babel src --out-dir dist --watch",
     "clean": "rimraf dist",
-    "prepublish": "npm run clean && npm run build",
+    "prepublish": "npm run clean && npm run build && npm run generate-toc",
     "generate-toc": "markdown-toc -i README.md"
   },
   "jest": {

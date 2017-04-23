@@ -1,9 +1,10 @@
 # Yurnalist
-The elegant console reporter, borrowed from [Yarn](https://yarnpkg.com).
+An elegant console reporter, borrowed from [Yarn](https://yarnpkg.com).
 
 <!-- toc -->
 
 - [Introduction](#introduction)
+  * [Features](#features)
 - [Install](#install)
 - [How to use](#how-to-use)
 - [Examples](#examples)
@@ -38,11 +39,24 @@ The elegant console reporter, borrowed from [Yarn](https://yarnpkg.com).
 <!-- tocstop -->
 
 ## Introduction
-Pretty console output makes people happy, and Yarn is doing a really nice job. Yurnalist isolates the part of Yarn responsible for handling the console and makes it available for standalone use in other Node.js commandline tools.
+Pretty console output makes developers happy. Yarn is doing a really nice job. Yurnalist takes the console reporter from Yarn and makes it available for use in other Node.js applications.
 
-Yurnalist can be used to report many different things in the console besides simple messages, including progress bars, activity spinners, process steps, objects, lists, emojis, trees and tables.
+Yurnalist can be used to report many different things in the besides simple messages.
 
-User input for questions and selection is also available.
+### Features
+
+* log, info, warn, succes, error & command messages
+* progress bars
+* activity spinners
+* process steps
+* object inspection
+* lists
+* emojis
+* trees
+* tables
+* user question
+* user select
+* program header & footer
 
 ## Install
 ```shell

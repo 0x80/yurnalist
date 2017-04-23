@@ -2,7 +2,7 @@
 Elegant console output borrowed from [Yarn](https://yarnpkg.com).
 
 ## Introduction
-Pretty console output makes you happy. Yarn is doing a really nice job with that. Yurnalist extracts the part of Yarn responsible for that and makes it available for standalone use in any other Node.js commandline tools.
+Pretty console output makes people happy, and Yarn is doing a really nice job. Yurnalist isolates the part of Yarn responsible for handling the console and makes it available for standalone use in any other Node.js commandline tools.
 
 Yurnalist can be used to display many differnt things in the console besides simple messages, including progress bars, activity spinners, process steps, objects, lists, trees and tables.
 
@@ -44,7 +44,9 @@ async function fetchSomething() {
   spinner.end();
 }
 
-fetchSomething().then(report.close())
+fetchSomething();
+
+report.close();
 ```
 
 When initialized the reporter opens a stream, which means you have to close it after you are done with the program, otherwise it won't stop. I'm still figuring out if this is really neccesary to expose in the API. Suggestions are welcome of course.

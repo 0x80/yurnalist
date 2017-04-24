@@ -42,7 +42,7 @@ An elegant console reporter, borrowed from [Yarn](https://yarnpkg.com).
 ## Introduction
 Pretty console output makes developers happy. Yarn is doing a really nice job. Yurnalist takes the console reporter from Yarn and makes it available for use in other Node.js applications.
 
-Yurnalist can be used to report many different things in the besides simple messages.
+Yurnalist can be used to report many different things besides simple messages.
 
 ### Features
 

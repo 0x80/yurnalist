@@ -1,11 +1,12 @@
 /* @flow */
- /* eslint max-len: 0 */
+/* eslint max-len: 0 */
 
 const messages = {
   upToDate: 'Already up-to-date.',
   folderInSync: 'Folder in sync.',
   nothingToInstall: 'Nothing to install.',
   resolvingPackages: 'Resolving packages',
+  checkingManifest: 'Validating package.json',
   fetchingPackages: 'Fetching packages',
   linkingDependencies: 'Linking dependencies',
   rebuildingPackages: 'Rebuilding all packages',
@@ -19,6 +20,8 @@ const messages = {
   waitingInstance: 'Waiting for the other yarn instance to finish',
   offlineRetrying: 'There appears to be trouble with your network connection. Retrying...',
   clearedCache: 'Cleared cache.',
+  couldntClearPackageFromCache: "Couldn't clear package $0 from cache",
+  clearedPackageFromCache: 'Cleared package $0 from cache',
   packWroteTarball: 'Wrote tarball to $0.',
 
   manifestPotentialTypo: 'Potential typo $0, did you mean $1?',
@@ -91,10 +94,11 @@ const messages = {
   jsonError: 'Error parsing JSON at $0, $1.',
   noFilePermission: "We don't have permissions to touch the file $0.",
   allDependenciesUpToDate: 'All of your dependencies are up to date.',
+  legendColorsForUpgradeInteractive: 'Color legend : \n $0    : Patch Update Backward-compatible bug fixes \n $1 : Minor Update backward-compatibles features',
   frozenLockfileError: 'Your lockfile needs to be updated, but yarn was run with `--frozen-lockfile`.',
   fileWriteError: 'Could not write file $0: $1',
   multiplePackagesCantUnpackInSameDestination: 'Pattern $0 is trying to unpack in the same destination $1 as pattern $2. This could result in a non deterministic behavior, skipping.',
-  incorrectLockfileEntry: 'Lockfile has incorrect entry for $0. Ingoring it.',
+  incorrectLockfileEntry: 'Lockfile has incorrect entry for $0. Ignoring it.',
 
   yarnOutdated: "Your current version of Yarn is out of date. The latest version is $0 while you're on $1.",
   yarnOutdatedInstaller: 'To upgrade, download the latest installer at $0.',
@@ -127,16 +131,36 @@ const messages = {
   binLinkCollision: "There's already a linked binary called $0 in your global Yarn bin. Could not link this package's $0 bin entry.",
   linkCollision: "There's already a module called $0 registered.",
   linkMissing: 'No registered module found called $0.',
-  linkInstallMessage: 'You can now run `yarn link $0` in the projects where you want to use this module and it will be used instead.',
   linkRegistered: 'Registered $0.',
+  linkRegisteredMessage: 'You can now run `yarn link $0` in the projects where you want to use this module and it will be used instead.',
   linkUnregistered: 'Unregistered $0.',
+  linkUnregisteredMessage: 'You can now run `yarn unlink $0` in the projects where you no longer want to use this module.',
   linkUsing: 'Using linked module for $0.',
+  linkDisusing: 'Removed linked module $0.',
+  linkDisusingMessage: 'You will need to run `yarn` to re-install the package that was linked.',
+
+  createInvalidBin: 'Invalid bin entry found in package $0.',
+  createMissingPackage: 'Package not found - this is probably an internal error, and should be reported at https://github.com/yarnpkg/yarn/issues.',
+
+  workspacesRequirePrivateProjects: 'Workspaces can only be enabled in private projects',
+  workspaceExperimentalDisabled: 'The workspace feature is currently experimental and needs to be manually enabled - please add "workspaces-experimental true" to your .yarnrc file.',
+  workspaceRootNotFound: "Cannot find the root of your workspace - are you sure you're currently in a workspace?",
+  workspaceMissingWorkspace: 'Missing workspace name.',
+  workspaceMissingCommand: 'Missing command name.',
+  workspaceUnknownWorkspace: 'Unknown workspace $0.',
+  workspaceVersionMandatory: 'Missing version in workspace at $0, ignoring.',
+  workspaceNameMandatory: 'Missing name in workspace at $0, ignoring.',
+  workspaceNameDuplicate: 'There are more than one workspace with name $0',
+
+  execMissingCommand: 'Missing command name.',
 
   commandNotSpecified: 'No command specified.',
   binCommands: 'Commands available from binary scripts: ',
   possibleCommands: 'Project commands',
   commandQuestion: 'Which command would you like to run?',
   commandFailed: 'Command failed with exit code $0.',
+  packageRequiresNodeGyp: 'This package requires node-gyp, which is not currently installed. Yarn will attempt to automatically install it. If this fails, you can run "yarn global add node-gyp" to manually install it.',
+  nodeGypAutoInstallFailed: 'Failed to auto-install node-gyp. Please run "yarn global add node-gyp" manually. Error: $0',
 
   foundIncompatible: 'Found incompatible module',
   incompatibleEngine: 'The engine $0 is incompatible with this module. Expected version $1.',
@@ -157,6 +181,8 @@ const messages = {
 
   foundWarnings: 'Found $0 warnings.',
   foundErrors: 'Found $0 errors.',
+
+  notSavedLockfileNoDependencies: 'Lockfile not saved, no dependencies.',
 
   savedLockfile: 'Saved lockfile.',
   noRequiredLockfile: 'No lockfile in this directory. Run `yarn install` to generate one.',
@@ -186,7 +212,7 @@ const messages = {
   whyDiskSizeWithout: 'Disk size without dependencies: $0',
   whyDiskSizeUnique: 'Disk size with unique dependencies: $0',
   whyDiskSizeTransitive: 'Disk size with transitive dependencies: $0',
-  whySharedDependencies: 'Amount of shared dependencies: $0',
+  whySharedDependencies: 'Number of shared dependencies: $0',
   whyHoistedTo: `Has been hoisted to $0`,
 
   whyHoistedFromSimple: `This module exists because it's hoisted from $0.`,
@@ -202,6 +228,9 @@ const messages = {
 
   cleanRemovedFiles: 'Removed $0 files',
   cleanSavedSize: 'Saved $0 MB.',
+
+  configFileFound: 'Found configuration file $0.',
+  configPossibleFile: 'Checking for configuration file $0.',
 
   npmUsername: 'npm username',
   npmPassword: 'npm password',
@@ -227,12 +256,12 @@ const messages = {
   infoFail: 'Received invalid response from npm.',
   malformedRegistryResponse: 'Received malformed response from registry for $0. The registry may be down.',
 
-  cantRequestOffline: 'Can\'t make a request in offline mode',
+  cantRequestOffline: "Can't make a request in offline mode ($0)",
   requestManagerNotSetupHAR: 'RequestManager was not setup to capture HAR files',
   requestError: 'Request $0 returned a $1',
   requestFailed: 'Request failed $0',
   tarballNotInNetworkOrCache: '$0: Tarball is not in network and can not be located in cache ($1)',
-  fetchBadHash: 'Bad hash. Expected $0 but got $1 ',
+  fetchBadHashWithPath: "Hashes don't match when extracting file $0. Expected $1 but got $2",
   fetchErrorCorrupt: '$0. Mirror tarball appears to be corrupt. You can resolve this by running:\n\n  rm -rf $1\n  yarn install',
   errorDecompressingTarball: '$0. Error decompressing $1, it appears to be corrupt.',
   updateInstalling: 'Installing $0...',
@@ -251,16 +280,16 @@ const messages = {
   couldBeDeduped: '$0 could be deduped from $1 to $2',
   lockfileNotContainPattern: 'Lockfile does not contain pattern: $0',
   integrityCheckFailed: 'Integrity check failed',
-  noIntegrityFile: 'Couldn\'t find an integrity file',
-  integrityCheckLinkedModulesDontMatch: 'Integrity check: Linked modules don\'t match',
-  integrityPatternsDontMatch: 'Integrity check: Patterns don\'t match',
-  integrityFlagsDontMatch: 'Integrity check: Flags don\'t match',
-  integrityLockfilesDontMatch: 'Integrity check: Lock files don\'t match',
+  noIntegrityFile: "Couldn't find an integrity file",
+  integrityFailedExpectedIsNotAJSON: 'Integrity check: integrity file is not a json',
+  integrityCheckLinkedModulesDontMatch: "Integrity check: Linked modules don't match",
+  integrityFlagsDontMatch: "Integrity check: Flags don't match",
+  integrityLockfilesDontMatch: "Integrity check: Lock files don't match",
   integrityFailedFilesMissing: 'Integrity check: Files are missing',
   packageNotInstalled: '$0 not installed',
   optionalDepNotInstalled: 'Optional dependency $0 not installed',
   packageWrongVersion: '$0 is wrong version: expected $1, got $2',
-  packageDontSatisfy: '$0 doesn\'t satisfy found match of $1',
+  packageDontSatisfy: "$0 doesn't satisfy found match of $1",
 
   lockfileExists: 'Lockfile already exists, not importing.',
   skippingImport: 'Skipping import of $0 for $1',
@@ -268,6 +297,8 @@ const messages = {
   importResolveFailed: 'Import of $0 failed starting in $1',
   importResolvedRangeMatch: 'Using version $0 of $1 instead of $2 for $3',
   packageContainsYarnAsGlobal: 'Installing Yarn via Yarn will result in you having two separate versions of Yarn installed at the same time, which is not recommended. To update Yarn please follow https://yarnpkg.com/en/docs/install .',
+
+  scopeNotValid: 'The specified scope is not valid.',
 };
 
 export type LanguageKeys = $Keys<typeof messages>;

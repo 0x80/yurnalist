@@ -3,7 +3,7 @@
 const report = require('../dist');
 
 function sitOnIt(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function waitForIt(steps) {

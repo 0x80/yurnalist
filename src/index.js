@@ -12,7 +12,7 @@ export type ApiReporterOptions = {
   emoji?: boolean,
   noProgress?: boolean,
   silent?: boolean,
-  peekMemoryCounter?: boolean
+  peekMemoryCounter?: boolean,
 };
 
 const defaultOptions = {

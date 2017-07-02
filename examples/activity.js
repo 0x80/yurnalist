@@ -5,7 +5,7 @@ const report = require('../dist');
 
 /* A function to fake some async task */
 function doSomeWork(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function fetchSomething() {

@@ -70,6 +70,7 @@ const boundMethods = bindMethods(
     'select',
     'progress',
     'close',
+    'lang',
   ],
   reporter,
 );

@@ -1,7 +1,7 @@
 /* @flow */
 
 import ConsoleReporter from './reporters/console/console-reporter';
-
+import {boolifyWithDefault} from './util/conversion.js';
 import type {Stdout, Stdin} from './reporters/types.js';
 
 export type ApiReporterOptions = {
@@ -12,6 +12,7 @@ export type ApiReporterOptions = {
   emoji?: boolean,
   noProgress?: boolean,
   silent?: boolean,
+  nonInteractive?: boolean,
   peekMemoryCounter?: boolean,
 };
 
@@ -20,12 +21,16 @@ const defaultOptions = {
   peekMemoryCounter: false,
 };
 
+/**
+ * This code is based on yarn src/cli/index.js
+ */
 function createReporter(options?: ApiReporterOptions = {}): ConsoleReporter {
   const reporter = new ConsoleReporter({
-    emoji: options.emoji && process.stdout.isTTY && process.platform === 'darwin',
+    emoji: options.emoji && process.stdout.isTTY,
     verbose: options.verbose,
     noProgress: options.noProgress,
-    isSilent: options.silent,
+    isSilent: boolifyWithDefault(process.env.YURNALIST_SILENT, false) || options.silent,
+    nonInteractive: options.nonInteractive,
   });
 
   if (options.peekMemoryCounter) {

@@ -2,10 +2,6 @@
 
 const _camelCase = require('camelcase');
 
-export function has2xxResponse(res: Object): boolean {
-  return res.responseCode >= 200 && res.responseCode < 300;
-}
-
 export function sortAlpha(a: string, b: string): number {
   // sort alphabetically in a deterministic way
   const shortLen = Math.min(a.length, b.length);
@@ -17,6 +13,12 @@ export function sortAlpha(a: string, b: string): number {
     }
   }
   return a.length - b.length;
+}
+
+export function sortOptionsByFlags(a: Object, b: Object): number {
+  const aOpt = a.flags.replace(/-/g, '');
+  const bOpt = b.flags.replace(/-/g, '');
+  return sortAlpha(aOpt, bOpt);
 }
 
 export function entries<T>(obj: ?{[key: string]: T}): Array<[string, T]> {
@@ -77,4 +79,10 @@ export function compareSortedArrays<T>(array1: Array<T>, array2: Array<T>): bool
     }
   }
   return true;
+}
+
+export function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
 }

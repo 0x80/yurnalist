@@ -1,6 +1,6 @@
 {
   "name": "yurnalist",
-  "version": "1.0.0",
+  "version": "0.2.1",
   "description": "Elegant console output, borrowed from Yarn",
   "main": "dist/index.js",
   "repository": "https://github.com/0x80/yurnalist",
@@ -29,6 +29,7 @@
     "strip-bom": "^3.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^10.0.1",
     "babel-plugin-array-includes": "^2.0.3",
@@ -60,9 +61,6 @@
     "mock-stdin": "^0.3.0",
     "prettier": "^1.5.2",
     "temp": "^0.8.3"
-  },
-  "resolutions": {
-    "sshpk": "^1.14.2"
   },
   "engines": {
     "node": ">=4.0.0"

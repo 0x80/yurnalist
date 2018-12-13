@@ -11,10 +11,12 @@ const stream = require('stream');
 
 // ensures consistency across environments
 require('chalk').enabled = true;
+// $FlowFixMe
 require('chalk').supportsColor = true;
-// $FlowFixMe - flow-typed doesn't have definitions for Chalk 2.x.x
 require('chalk').level = 2;
+// $FlowFixMe
 require('chalk').blue._styles[0].open = '\u001b[34m';
+// $FlowFixMe
 require('chalk').bold._styles[0].close = '\u001b[22m';
 
 test('ConsoleReporter.step', async () => {

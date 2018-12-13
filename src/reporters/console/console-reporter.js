@@ -32,6 +32,7 @@ type InquirerResponses<K, T> = {[key: K]: Array<T>};
 
 // fixes bold on windows
 if (process.platform === 'win32' && !(process.env.TERM && /^xterm/i.test(process.env.TERM))) {
+  // $FlowFixMe
   chalk.bold._styles[0].close += '\u001b[m';
 }
 

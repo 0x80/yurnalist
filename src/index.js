@@ -26,6 +26,7 @@ const defaultOptions = {
  */
 function createReporter(options?: ApiReporterOptions = {}): ConsoleReporter {
   const reporter = new ConsoleReporter({
+    // $FlowFixMe
     emoji: options.emoji && process.stdout.isTTY,
     verbose: options.verbose,
     noProgress: options.noProgress,

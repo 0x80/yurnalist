@@ -40,7 +40,9 @@ An elegant console reporter, borrowed from [Yarn](https://yarnpkg.com).
 <!-- tocstop -->
 
 ## Introduction
-Pretty console output makes developers happy. Yarn is doing a really nice job. Yurnalist takes the console reporter from Yarn and makes it available for use in other Node.js applications.
+Pretty console output makes developers happy, and Yarn is doing a really nice job. Yurnalist takes the console reporter from Yarn and makes it available for use in other Node.js applications.
+
+The current version is based on code from Yarn 1.13.0.
 
 Yurnalist can be used to report many different things besides simple messages.
 
@@ -157,7 +159,8 @@ type ReporterOptions = {
   emoji?: boolean,
   noProgress?: boolean,
   silent?: boolean,
-  peekMemoryCounter?: boolean,
+  nonInteractive?: boolean,
+  peekMemoryCounter?: boolean
 };
 ```
 
@@ -168,11 +171,12 @@ const defaults = {
   verbose: false,
   stdout: process.stdout,
   stderr: process.stderr,
-  stdin: process.stdinn,
+  stdin: process.stdin,
   emoji: true,
   noProgress: false,
   silent: false,
-  peekMemoryCounter: false,
+  nonInteractive: false,
+  peekMemoryCounter: false
 }
 ```
 

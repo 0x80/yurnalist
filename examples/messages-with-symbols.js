@@ -1,5 +1,7 @@
 /* @noflow */
-const report = require('../dist');
+const report = require('../dist').createReporter({
+  useMessageSymbols: true,
+});
 
 report.log('A normal message without any decoration');
 report.info('An info message');

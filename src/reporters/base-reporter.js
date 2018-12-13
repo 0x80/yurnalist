@@ -14,9 +14,12 @@ import type {
 } from './types.js';
 import type {LanguageKeys} from './lang/en.js';
 import type {Formatter} from './format.js';
+// import type {AuditMetadata, AuditActionRecommendation, AuditAdvisory, AuditResolution} from '../cli/commands/audit';
+
 import {defaultFormatter} from './format.js';
 import * as languages from './lang/index.js';
 import isCI from 'is-ci';
+import os from 'os';
 
 const util = require('util');
 const EventEmitter = require('events').EventEmitter;
@@ -32,6 +35,7 @@ export type ReporterOptions = {
   emoji?: boolean,
   noProgress?: boolean,
   silent?: boolean,
+  nonInteractive?: boolean,
 };
 
 export function stringifyLangArgs(args: Array<any>): Array<string> {
@@ -41,9 +45,16 @@ export function stringifyLangArgs(args: Array<any>): Array<string> {
     } else {
       try {
         const str = JSON.stringify(val) || val + '';
-        // should match all "u001b" that follow an odd number of backslashes and convert them to ESC
+        // should match all literal line breaks and
+        // "u001b" that follow an odd number of backslashes and convert them to ESC
         // we do this because the JSON.stringify process has escaped these characters
-        return str.replace(/((?:^|[^\\])(?:\\{2})*)\\u001[bB]/g, '$1\u001b');
+        return str
+          .replace(/((?:^|[^\\])(?:\\{2})*)\\u001[bB]/g, '$1\u001b')
+          .replace(/[\\]r[\\]n|([\\])?[\\]n/g, (match, precededBacklash) => {
+            // precededBacklash not null when "\n" is preceded by a backlash ("\\n")
+            // match will be "\\n" and we don't replace it with os.EOL
+            return precededBacklash ? match : os.EOL;
+          });
       } catch (e) {
         return util.inspect(val);
       }
@@ -60,6 +71,7 @@ export default class BaseReporter {
     this.stderr = opts.stderr || process.stderr;
     this.stdin = opts.stdin || this._getStandardInput();
     this.emoji = !!opts.emoji;
+    this.nonInteractive = !!opts.nonInteractive;
     this.noProgress = !!opts.noProgress || isCI;
     this.isVerbose = !!opts.verbose;
 
@@ -81,16 +93,17 @@ export default class BaseReporter {
   noProgress: boolean;
   isVerbose: boolean;
   isSilent: boolean;
+  nonInteractive: boolean;
   format: Formatter;
 
-  peakMemoryInterval: ?number;
+  peakMemoryInterval: ?IntervalID;
   peakMemory: number;
   startTime: number;
 
   lang(key: LanguageKeys, ...args: Array<mixed>): string {
     const msg = languages[this.language][key] || languages.en[key];
     if (!msg) {
-      throw new ReferenceError(`Unknown language key ${key}`);
+      throw new ReferenceError(`No message defined for language key ${key}`);
     }
 
     // stringify args
@@ -100,6 +113,19 @@ export default class BaseReporter {
     return msg.replace(/\$(\d+)/g, (str, i: number) => {
       return stringifiedArgs[i];
     });
+  }
+
+  /**
+   * `stringifyLangArgs` run `JSON.stringify` on strings too causing
+   * them to appear quoted. This marks them as "raw" and prevents
+   * the quoting and escaping
+   */
+  rawText(str: string): {inspect(): string} {
+    return {
+      inspect(): string {
+        return str;
+      },
+    };
   }
 
   verbose(msg: string) {
@@ -139,6 +165,8 @@ export default class BaseReporter {
     this.peakMemoryInterval = setInterval(() => {
       this.checkPeakMemory();
     }, 1000);
+    // $FlowFixMe: Node's setInterval returns a Timeout, not a Number
+    this.peakMemoryInterval.unref();
   }
 
   checkPeakMemory() {
@@ -163,7 +191,7 @@ export default class BaseReporter {
   list(key: string, items: Array<string>, hints?: Object) {}
 
   // Outputs basic tree structure to console
-  tree(key: string, obj: Trees) {}
+  tree(key: string, obj: Trees, {force = false}: {force?: boolean} = {}) {}
 
   // called whenever we begin a step in the CLI.
   step(current: number, total: number, message: string, emoji?: string) {}
@@ -182,7 +210,8 @@ export default class BaseReporter {
   success(message: string) {}
 
   // a simple log message
-  log(message: string) {}
+  // TODO: rethink the {force} parameter. In the meantime, please don't use it (cf comments in #4143).
+  log(message: string, {force = false}: {force?: boolean} = {}) {}
 
   // a shell command has been executed
   command(command: string) {}
@@ -196,7 +225,7 @@ export default class BaseReporter {
   // the screen shown at the very end of the CLI
   footer(showPeakMemory: boolean) {}
 
-  //
+  // a table structure
   table(head: Array<string>, body: Array<Array<string>>) {}
 
   // render an activity spinner and return a function that will trigger an update
@@ -228,6 +257,9 @@ export default class BaseReporter {
   //
   async questionAffirm(question: string): Promise<boolean> {
     const condition = true; // trick eslint
+    if (this.nonInteractive) {
+      return true;
+    }
 
     while (condition) {
       let answer = await this.question(question);

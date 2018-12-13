@@ -16,8 +16,6 @@ async function waitForIt(steps) {
     tick();
     await sitOnIt(100);
   }
-
   report.success('🐣 Tjiep!');
 }
-
 waitForIt(24);

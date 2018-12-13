@@ -16,7 +16,7 @@ Object {
 
 exports[`ConsoleReporter.error 1`] = `
 Object {
-  "stderr": "[2K[1G[31merror[39m foobar",
+  "stderr": "[2K[1G[31m✖[39m foobar",
   "stdout": "",
 }
 `;
@@ -24,14 +24,14 @@ Object {
 exports[`ConsoleReporter.footer 1`] = `
 Object {
   "stderr": "",
-  "stdout": "[2K[1G✨  Done in 0.00s.",
+  "stdout": "[2K[1G✨ Done in 0.00s.",
 }
 `;
 
 exports[`ConsoleReporter.footer 2`] = `
 Object {
   "stderr": "",
-  "stdout": "[2K[1G✨  Done in 0.00s. Peak memory usage 0.00MB.",
+  "stdout": "[2K[1G✨ Done in 0.00s. Peak memory usage 0.00MB.",
 }
 `;
 
@@ -45,7 +45,7 @@ Object {
 exports[`ConsoleReporter.info 1`] = `
 Object {
   "stderr": "",
-  "stdout": "[2K[1G[34minfo[39m foobar",
+  "stdout": "[2K[1G[34mℹ[39m foobar",
 }
 `;
 
@@ -87,7 +87,7 @@ Object {
 exports[`ConsoleReporter.select 1`] = `
 Object {
   "stderr": "",
-  "stdout": "[2K[1G[34minfo[39m Ayo?
+  "stdout": "[2K[1G[34mℹ[39m Ayo?
 [2K[1G  [2m1)[22m foo
 [2K[1G  [2m2)[22m bar
 [1G[0JSelect one: [13G1",
@@ -104,7 +104,7 @@ Object {
 exports[`ConsoleReporter.success 1`] = `
 Object {
   "stderr": "",
-  "stdout": "[2K[1G[32msuccess[39m foobar",
+  "stdout": "[2K[1G[32m✔[39m foobar",
 }
 `;
 
@@ -127,7 +127,7 @@ Object {
 
 exports[`ConsoleReporter.warn 1`] = `
 Object {
-  "stderr": "[2K[1G[33mwarning[39m foobar",
+  "stderr": "[2K[1G! foobar",
   "stdout": "",
 }
 `;

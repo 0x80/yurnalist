@@ -6,13 +6,10 @@ async function askQuestions() {
   let answer = await report.question('What do you want?');
   report.info(`Sorry, I don't have ${answer}`);
 
-  answer = await report.question(`What's your password?`, {
+  answer = await report.question(`What's your password? (required)`, {
     password: true,
     required: true,
   });
-
-  answer = await report.question('What do you want?', {required: true});
-  report.info(`Sorry, I don't have ${answer}`);
 
   report.info(`Thanks, I won't tell anyone`);
 }

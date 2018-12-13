@@ -43,7 +43,7 @@
     "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-0": "^6.0.0",
     "babylon": "^6.5.0",
-    "eslint": "^4.3.0",
+    "eslint": "4.3.0",
     "eslint-config-fb-strict": "^22.0.0",
     "eslint-plugin-babel": "^5.0.0",
     "eslint-plugin-flowtype": "^2.35.0",
@@ -61,7 +61,8 @@
     "jsinspect": "^0.12.6",
     "mock-stdin": "^0.3.0",
     "prettier": "^1.5.2",
-    "temp": "^0.8.3"
+    "temp": "^0.8.3",
+    "webpack": "^2.1.0-beta.25"
   },
   "resolutions": {
     "sshpk": "^1.14.2"
@@ -74,7 +75,7 @@
     "test-only": "node --max_old_space_size=4096 node_modules/jest/bin/jest.js --verbose",
     "test-coverage": "node --max_old_space_size=4096 node_modules/jest/bin/jest.js --coverage --verbose",
     "lint": "eslint . && flow check",
-    "prettier": "eslint src __tests__ --fix",
+    "prettier": "eslint src examples __tests__ --fix",
     "build": "babel src --out-dir dist",
     "watch": "babel src --out-dir dist --watch",
     "clean": "rimraf dist",

@@ -304,4 +304,3 @@ test('ConsoleReporter.tree is silent when isSilent is true', async () => {
     }),
   ).toMatchSnapshot();
 });
-

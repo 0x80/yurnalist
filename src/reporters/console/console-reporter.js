@@ -94,15 +94,17 @@ export default class ConsoleReporter extends BaseReporter {
     }
 
     //
-    const builtRows = rows.map((row: Row): string => {
-      for (let i = 0; i < row.length; i++) {
-        const field = row[i];
-        const padding = cols[i] - this.format.stripColor(field).length;
+    const builtRows = rows.map(
+      (row: Row): string => {
+        for (let i = 0; i < row.length; i++) {
+          const field = row[i];
+          const padding = cols[i] - this.format.stripColor(field).length;
 
-        row[i] = field + ' '.repeat(padding);
-      }
-      return row.join(' ');
-    });
+          row[i] = field + ' '.repeat(padding);
+        }
+        return row.join(' ');
+      },
+    );
 
     this.log(builtRows.join('\n'));
   }

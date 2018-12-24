@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.0.4] - 2018-12-24
+
+* Add package keywords for NPM repository
+
 ## [1.0.3] - 2018-12-14
 
 * Update README and fix CHANGELOG

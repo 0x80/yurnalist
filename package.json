@@ -1,6 +1,6 @@
 {
   "name": "yurnalist",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Elegant console output, borrowed from Yarn",
   "main": "dist/index.js",
   "repository": "https://github.com/0x80/yurnalist",
@@ -94,15 +94,15 @@
     ]
   },
   "keywords": [
-		"ansi",
-		"cli",
-		"color",
-		"colors",
-		"colour",
-		"formatting",
-		"log",
-		"shell",
-		"terminal",
+    "ansi",
+    "cli",
+    "color",
+    "colors",
+    "colour",
+    "formatting",
+    "log",
+    "shell",
+    "terminal",
     "activity",
     "command-line",
     "command",
@@ -136,5 +136,5 @@
     "tree",
     "warn",
     "yarn"
-	]
+  ]
 }

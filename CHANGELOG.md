@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.0.5] - 2019-01-05
+
+* Add missing strip-ansi dependency
+
 ## [1.0.4] - 2018-12-24
 
 * Add package keywords for NPM repository

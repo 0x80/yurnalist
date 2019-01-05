@@ -26,6 +26,7 @@
     "read": "^1.0.7",
     "rimraf": "^2.5.0",
     "semver": "^5.1.0",
+    "strip-ansi": "^5.0.0",
     "strip-bom": "^3.0.0"
   },
   "devDependencies": {

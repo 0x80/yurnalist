@@ -137,7 +137,7 @@ test('ConsoleReporter.activity', async () => {
 
 test('ConsoleReporter.select', async () => {
   expect(
-    await getConsoleBuff(async function(r, streams): Promise<void> {
+    await getConsoleBuff(async function(r, streams) {
       streams.stdin.on('resume', function() {
         streams.stdin.send('1\n', 'ascii');
         streams.stdin.end();

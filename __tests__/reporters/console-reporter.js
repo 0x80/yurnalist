@@ -22,7 +22,7 @@ require('chalk').bold._styles[0].close = '\u001b[22m';
 test('ConsoleReporter.step', async () => {
   expect(
     await getConsoleBuff(r => {
-      r.step(1, 5, 'foboar');
+      r.step(1, 5, 'foobar');
     }),
   ).toMatchSnapshot();
 });

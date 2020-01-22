@@ -411,7 +411,7 @@ export default class ConsoleReporter extends BaseReporter {
       };
     }
 
-    if (!this.isTTY) {
+    if (!this.isTTY || this.isSilent) {
       return function() {
         // TODO what should the behaviour here be? we could buffer progress messages maybe
       };

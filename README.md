@@ -163,24 +163,21 @@ The following functions are available:
 
 Pretty-prints the `thing`.
 
-### list(key: string, items: Array<string>, hints?: Object)
+### list(title: string, items: Array<string>, hints?: Object)
 
 Generates a list of the provided items. Turns into a definition list if `hints`
-are provided. Note that the `key` is not used.
+are provided.
 
 Example of a simple list:
 
 ```
-const someList = ['bananas', 'tulips', 'eggs', 'bamischijf'];
-
-report.info('My grocery list');
-report.list('ignored', someList);
+report.list('My grocery list', ['bananas', 'tulips', 'eggs', 'bamischijf']);
 ```
 
-generates
+Outputs:
 
 ```
-info My grocery list
+list My grocery list
    - bananas
    - tulips
    - eggs
@@ -191,7 +188,7 @@ info My grocery list
 Example with hints:
 
 ```
-const someList = ['bananas', 'tulips', 'eggs', 'bamischijf'];
+const items = ['bananas', 'tulips', 'eggs', 'bamischijf'];
 
 const hints = {
   bananas: 'for baking',
@@ -200,12 +197,13 @@ const hints = {
   bamischijf: 'if they have it',
 };
 
-report.info('My grocery list');
-report.list('dunno', someList, hints);
+report.list('My grocery list', items, hints);
 ```
-generates
+
+Outputs:
+
 ```
-info My grocery list
+list My grocery list
     - bananas
       for baking
    - tulips

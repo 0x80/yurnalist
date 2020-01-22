@@ -134,7 +134,14 @@ export default class ConsoleReporter extends BaseReporter {
     this.log(String(value), {force: true});
   }
 
-  list(key: string, items: Array<string>, hints?: Object) {
+  list(title: string, items: Array<string>, hints?: Object) {
+    /**
+     * Because in the original Yarn code list() is called starting with a "key:
+     * string" argument that is ignored, we don't assume that a title has been
+     * passed in or is a valid string, to avoid creating a breaking change.
+     */
+    this._logCategory('list', 'magenta', typeof title === 'string' ? this.format.bold(title) : '');
+
     const gutterWidth = (this._lastCategorySize || 2) - 1;
 
     if (hints) {

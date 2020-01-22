@@ -19,6 +19,7 @@ import {clearLine} from './util.js';
 import {removeSuffix} from '../../util/misc.js';
 import {sortTrees, recurseTree, getFormattedOutput} from './helpers/tree-helper.js';
 import inquirer from 'inquirer';
+import isCI from 'is-ci';
 
 const {inspect} = require('util');
 const readline = require('readline');
@@ -321,7 +322,7 @@ export default class ConsoleReporter extends BaseReporter {
   }
 
   activity(): ReporterSpinner {
-    if (!this.isTTY) {
+    if (!this.isTTY || this.isSilent || isCI) {
       return {
         tick() {},
         end() {},
@@ -411,7 +412,7 @@ export default class ConsoleReporter extends BaseReporter {
       };
     }
 
-    if (!this.isTTY) {
+    if (!this.isTTY || this.isSilent || isCI) {
       return function() {
         // TODO what should the behaviour here be? we could buffer progress messages maybe
       };

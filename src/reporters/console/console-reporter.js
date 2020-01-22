@@ -321,7 +321,7 @@ export default class ConsoleReporter extends BaseReporter {
   }
 
   activity(): ReporterSpinner {
-    if (!this.isTTY) {
+    if (!this.isTTY || this.isSilent) {
       return {
         tick() {},
         end() {},

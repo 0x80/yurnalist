@@ -182,7 +182,7 @@ export default class ConsoleReporter extends BaseReporter {
       return;
     }
     clearLine(this.stdout);
-    this.stdout.write(`${msg}\n`);
+    this.stdout.write(this.emojify(`${msg}\n`));
   }
 
   success(msg: string) {

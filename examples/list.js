@@ -7,7 +7,7 @@ report.list('My grocery list', someList);
 
 const hints = {
   bananas: 'for baking',
-  tulips: 'because it makes you happy',
+  tulips: 'because it makes you :joy:',
   eggs: 'not the cheap ones though',
   bamischijf: 'if they have it',
 };

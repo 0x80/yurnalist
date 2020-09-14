@@ -14,6 +14,7 @@ import type {
 } from './types.js';
 import type {LanguageKeys} from './lang/en.js';
 import type {Formatter} from './format.js';
+import { emojify as nodeEmojify } from 'node-emoji';
 // import type {AuditMetadata, AuditActionRecommendation, AuditAdvisory, AuditResolution} from '../cli/commands/audit';
 
 import {defaultFormatter} from './format.js';
@@ -99,6 +100,10 @@ export default class BaseReporter {
   peakMemoryInterval: ?IntervalID;
   peakMemory: number;
   startTime: number;
+
+  emojify( s: string ): string {
+      return this.emoji ? nodeEmojify(s) : s;
+  }
 
   lang(key: LanguageKeys, ...args: Array<mixed>): string {
     const msg = languages[this.language][key] || languages.en[key];

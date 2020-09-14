@@ -43,7 +43,6 @@
     "eslint-plugin-react": "^7.1.0",
     "eslint-plugin-relay": "^1.0.0",
     "eslint-plugin-yarn-internal": "file:scripts/eslint-rules",
-    "execa": "^1.0.0",
     "flow-bin": "0.88.0",
     "is-builtin-module": "^3.0.0",
     "jest": "^23.6.0",

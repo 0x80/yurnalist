@@ -13,3 +13,6 @@ const hints = {
 };
 
 report.list('The same list with hints', someList, hints);
+
+report.info('The same list with just the hints');
+report.list('just the hints', hints);

@@ -1,13 +1,11 @@
 {
   "name": "yurnalist",
-  "version": "2.1.0",
+  "version": "3.0.0-alpha-1",
   "description": "Elegant console output, borrowed from Yarn",
   "main": "dist/index.js",
   "repository": "https://github.com/0x80/yurnalist",
   "author": "Thijs Koerselman",
   "license": "BSD-2-Clause",
-  "preferGlobal": true,
-  "installationMethod": "unknown",
   "dependencies": {
     "chalk": "^2.4.2",
     "inquirer": "^7.0.0",
@@ -54,7 +52,7 @@
     "semver": "^6.3.0"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=14.0.0"
   },
   "scripts": {
     "test": "yarn lint && yarn test-only",

@@ -1,82 +1,83 @@
-/* @flow */
 /* eslint yarn-internal/warn-language: 0 */
 
-import BaseReporter, {stringifyLangArgs} from '../../src/reporters/base-reporter.js';
-import {EOL} from 'os';
+import { EOL } from "os";
+import BaseReporter, {
+  stringifyLangArgs,
+} from "../../src/reporters/base-reporter.js";
 
-test('BaseReporter.getTotalTime', () => {
+test("BaseReporter.getTotalTime", () => {
   const reporter = new BaseReporter();
-  expect(typeof reporter.getTotalTime() === 'number').toBeTruthy();
+  expect(typeof reporter.getTotalTime() === "number").toBeTruthy();
   reporter.close();
 });
 
-test('BaseReporter.step', () => {
+test("BaseReporter.step", () => {
   const reporter = new BaseReporter();
-  reporter.step(1, 5, 'foo');
+  reporter.step(1, 5, "foo");
   reporter.close();
 });
 
-test('BaseReporter.error', () => {
+test("BaseReporter.error", () => {
   const reporter = new BaseReporter();
-  reporter.error('');
+  reporter.error("");
   reporter.close();
 });
 
-test('BaseReporter.warn', () => {
+test("BaseReporter.warn", () => {
   const reporter = new BaseReporter();
-  reporter.warn('');
+  reporter.warn("");
   reporter.close();
 });
 
-test('BaseReporter.info', () => {
+test("BaseReporter.info", () => {
   const reporter = new BaseReporter();
-  reporter.info('');
+  reporter.info("");
   reporter.close();
 });
 
-test('BaseReporter.success', () => {
+test("BaseReporter.success", () => {
   const reporter = new BaseReporter();
-  reporter.success('');
+  reporter.success("");
   reporter.close();
 });
 
-test('BaseReporter.log', () => {
+test("BaseReporter.log", () => {
   const reporter = new BaseReporter();
-  reporter.log('');
+  reporter.log("");
   reporter.close();
 });
 
-test('BaseReporter.command', () => {
+test("BaseReporter.command", () => {
   const reporter = new BaseReporter();
-  reporter.command('');
+  reporter.command("");
   reporter.close();
 });
 
-test('BaseReporter.header', () => {
+test("BaseReporter.header", () => {
   const reporter = new BaseReporter();
-  reporter.header('', {name: '', version: ''});
+  reporter.header("", { name: "", version: "" });
   reporter.close();
 });
 
-test('BaseReporter.footer', () => {
+test("BaseReporter.footer", () => {
   const reporter = new BaseReporter();
   reporter.footer(false);
   reporter.close();
 });
 
-test('BaseReporter.activity', () => {
+test("BaseReporter.activity", () => {
   const reporter = new BaseReporter();
   const activity = reporter.activity();
-  activity.tick('');
+  activity.tick("");
   activity.end();
   reporter.close();
 });
 
-test('BaseReporter.question', async () => {
+test("BaseReporter.question", async () => {
   const reporter = new BaseReporter();
   let error;
   try {
-    await reporter.question('');
+    await reporter.question("");
   } catch (e) {
     error = e;
   }
@@ -84,11 +85,11 @@ test('BaseReporter.question', async () => {
   reporter.close();
 });
 
-test('BaseReporter.select', async () => {
+test("BaseReporter.select", async () => {
   const reporter = new BaseReporter();
   let error;
   try {
-    await reporter.select('?', '', []);
+    await reporter.select("?", "", []);
   } catch (e) {
     error = e;
   }
@@ -96,30 +97,35 @@ test('BaseReporter.select', async () => {
   reporter.close();
 });
 
-test('BaseReporter.progress', () => {
+test("BaseReporter.progress", () => {
   const reporter = new BaseReporter();
   const tick = reporter.progress(1);
   tick();
   reporter.close();
 });
 
-test('BaseReporter.disableProgress', () => {
+test("BaseReporter.disableProgress", () => {
   const reporter = new BaseReporter();
   reporter.disableProgress();
   expect(reporter.noProgress).toBeTruthy();
 });
 
-test('BaseReporter.termstrings', () => {
+test("BaseReporter.termstrings", () => {
   const reporter = new BaseReporter();
   const expected = '"\u001b[2mjsprim#\u001b[22mjson-schema" not installed';
-  expect(reporter.lang('packageNotInstalled', '\u001b[2mjsprim#\u001b[22mjson-schema')).toEqual(expected);
+  expect(
+    reporter.lang(
+      "packageNotInstalled",
+      "\u001b[2mjsprim#\u001b[22mjson-schema"
+    )
+  ).toEqual(expected);
 });
 
-test('BaseReporter.prompt', async () => {
+test("BaseReporter.prompt", async () => {
   const reporter = new BaseReporter();
   let error;
   try {
-    await reporter.prompt('', []);
+    await reporter.prompt("", []);
   } catch (e) {
     error = e;
   }
@@ -127,15 +133,17 @@ test('BaseReporter.prompt', async () => {
   reporter.close();
 });
 
-test('stringifyLangArgs should replace \\n and \\r\\n with new line', () => {
-  const input = '\r\nUnexpected token 123\r\nat position\n.Try again';
+test("stringifyLangArgs should replace \\n and \\r\\n with new line", () => {
+  const input = "\r\nUnexpected token 123\r\nat position\n.Try again";
   const expected = `"${EOL}Unexpected token 123${EOL}at position${EOL}.Try again"`;
   expect(stringifyLangArgs([input])).toEqual([expected]);
 });
 
-test('stringifyLangArgs should not replace \\\\n with new line', () => {
-  const input = 'Directory not found: C:\\Users\\An\\Documents\\Projects\\newProject';
-  const expected = '"Directory not found: C:\\\\Users\\\\An\\\\Documents\\\\Projects\\\\newProject"';
+test("stringifyLangArgs should not replace \\\\n with new line", () => {
+  const input =
+    "Directory not found: C:\\Users\\An\\Documents\\Projects\\newProject";
+  const expected =
+    '"Directory not found: C:\\\\Users\\\\An\\\\Documents\\\\Projects\\\\newProject"';
 
   expect(stringifyLangArgs([input])).toEqual([expected]);
 });

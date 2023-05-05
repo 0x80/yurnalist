@@ -1,8 +1,6 @@
-/* @flow */
-
-import type Reporter from '../../src/reporters/base-reporter.js';
-const Stdin = require('mock-stdin').stdin.Class;
-const {Writable} = require('stream');
+import type Reporter from "../../src/reporters/base-reporter.js";
+const Stdin = require("mock-stdin").stdin.Class;
+const { Writable } = require("stream");
 
 export type MockData = {
   stdout: string,
@@ -13,16 +11,16 @@ type Interceptor<T> = (data: MockData, reporter: Reporter, prepared: any) => T;
 
 type MockCallback = (reporter: Reporter, opts: Object) => ?Promise<void>;
 
-export default function<T>(
+export default function <T>(
   Reporter: Function,
   interceptor: Interceptor<T>,
   prepare?: ?(reporter: Reporter) => any,
-  opts?: Object,
+  opts?: Object
 ): (callback: MockCallback) => Promise<T> {
-  return async function(callback: MockCallback): * {
+  return async function (callback: MockCallback): * {
     const data: MockData = {
-      stderr: '',
-      stdout: '',
+      stderr: "",
+      stdout: "",
     };
 
     const buildStream = (key): Writable => {
@@ -32,8 +30,8 @@ export default function<T>(
       stream.columns = 1000;
 
       // $FlowFixMe: TODO ditto
-      stream.write = msg => {
-        stream.emit('data', msg);
+      stream.write = (msg) => {
+        stream.emit("data", msg);
         data[key] += msg;
       };
 
@@ -42,8 +40,8 @@ export default function<T>(
 
     const newOpts = {
       stdin: new Stdin(),
-      stdout: buildStream('stdout'),
-      stderr: buildStream('stderr'),
+      stdout: buildStream("stdout"),
+      stderr: buildStream("stderr"),
       emoji: true,
       ...(opts || {}),
     };

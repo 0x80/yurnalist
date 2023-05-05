@@ -1,58 +1,48 @@
-/* @flow */
-
+import { default as chalk } from "chalk";
+import inquirer, { Answers } from "inquirer";
+import isCI from "is-ci";
+import readline from "node:readline";
+import tty from "node:tty";
+import { inspect } from "node:util";
+import read from "read";
+import stripAnsi from "strip-ansi";
+import { JsonValue } from "type-fest";
+import { removeSuffix } from "~/utils/misc";
+import BaseReporter, { ReporterOptions } from "../base-reporter";
+import type { FormatKeys } from "../format";
 import type {
-  ReporterSetSpinner,
-  ReporterSpinnerSet,
   Package,
-  Trees,
-  ReporterSpinner,
-  ReporterSelectOption,
-  QuestionOptions,
   PromptOptions,
-} from '../types.js';
-import type {FormatKeys} from '../format.js';
-
-import BaseReporter from '../base-reporter.js';
-import Progress from './progress-bar.js';
-import Spinner from './spinner-progress.js';
-import {clearLine} from './util.js';
-import {removeSuffix} from '../../util/misc.js';
-import {sortTrees, recurseTree, getFormattedOutput} from './helpers/tree-helper.js';
-import inquirer from 'inquirer';
-import isCI from 'is-ci';
-
-const {inspect} = require('util');
-const readline = require('readline');
-const chalk = require('chalk');
-const stripAnsi = require('strip-ansi');
-const read = require('read');
-const tty = require('tty');
+  QuestionOptions,
+  ReporterSelectOption,
+  ReporterSetSpinner,
+  ReporterSpinner,
+  ReporterSpinnerSet,
+} from "../types";
+import Progress from "./progress-bar";
+import Spinner from "./spinner-progress";
+import { clearLine } from "./utils";
 
 type Row = Array<string>;
-type InquirerResponses<K, T> = {[key: K]: Array<T>};
+// type InquirerResponses<K, T> = { [key: K]: Array<T> };
 
-// fixes bold on windows
-if (process.platform === 'win32' && !(process.env.TERM && /^xterm/i.test(process.env.TERM))) {
-  // $FlowFixMe
-  chalk.bold._styles[0].close += '\u001b[m';
-}
-
-export default class ConsoleReporter extends BaseReporter {
-  constructor(opts: Object) {
+export class ConsoleReporter extends BaseReporter {
+  constructor(opts: ReporterOptions = {}) {
     super(opts);
 
     this._lastCategorySize = 0;
     this._spinners = new Set();
-    this.format = (chalk: any);
+    // @ts-expect-error weird construction here with stripColor
+    this.format = chalk;
     this.format.stripColor = stripAnsi;
-    this.isSilent = !!opts.isSilent;
+    this.isSilent = !!opts.silent;
   }
 
   _lastCategorySize: number;
-  _progressBar: ?Progress;
+  _progressBar?: Progress;
   _spinners: Set<Spinner>;
 
-  _prependEmoji(msg: string, emoji: ?string): string {
+  _prependEmoji(msg: string, emoji?: string): string {
     if (this.emoji && emoji && this.isTTY) {
       msg = `${emoji}  ${msg}`;
     }
@@ -65,23 +55,23 @@ export default class ConsoleReporter extends BaseReporter {
   }
 
   _verbose(msg: string) {
-    this._logCategory('verbose', 'grey', `${process.uptime()} ${msg}`);
+    this._logCategory("verbose", "grey", `${process.uptime()} ${msg}`);
   }
 
   _verboseInspect(obj: any) {
     this.inspect(obj);
   }
 
-  close() {
+  close = () => {
     for (const spinner of this._spinners) {
       spinner.stop();
     }
     this._spinners.clear();
     this.stopProgress();
     super.close();
-  }
+  };
 
-  table(head: Array<string>, body: Array<Row>) {
+  table = (head: Array<string>, body: Array<Row>) => {
     //
     head = head.map((field: string): string => this.format.underline(field));
 
@@ -91,7 +81,9 @@ export default class ConsoleReporter extends BaseReporter {
     // get column widths
     const cols: Array<number> = [];
     for (let i = 0; i < head.length; i++) {
-      const widths = rows.map((row: Row): number => this.format.stripColor(row[i]).length);
+      const widths = rows.map(
+        (row: Row): number => this.format.stripColor(row[i]).length
+      );
       cols[i] = Math.max(...widths);
     }
 
@@ -101,28 +93,28 @@ export default class ConsoleReporter extends BaseReporter {
         const field = row[i];
         const padding = cols[i] - this.format.stripColor(field).length;
 
-        row[i] = field + ' '.repeat(padding);
+        row[i] = field + " ".repeat(padding);
       }
-      return row.join(' ');
+      return row.join(" ");
     });
 
-    this.log(builtRows.join('\n'));
-  }
+    this.log(builtRows.join("\n"));
+  };
 
-  step(current: number, total: number, msg: string, emoji?: string) {
+  step = (current: number, total: number, msg: string, emoji?: string) => {
     msg = this._prependEmoji(msg, emoji);
 
-    if (msg.endsWith('?')) {
-      msg = `${removeSuffix(msg, '?')}...?`;
+    if (msg.endsWith("?")) {
+      msg = `${removeSuffix(msg, "?")}...?`;
     } else {
-      msg += '...';
+      msg += "...";
     }
 
     this.log(`${this.format.dim(`[${current}/${total}]`)} ${msg}`);
-  }
+  };
 
-  inspect(value: mixed) {
-    if (typeof value !== 'number' && typeof value !== 'string') {
+  inspect = (value: any) => {
+    if (typeof value !== "number" && typeof value !== "string") {
       value = inspect(value, {
         breakLength: 0,
         colors: this.isTTY,
@@ -131,36 +123,44 @@ export default class ConsoleReporter extends BaseReporter {
       });
     }
 
-    this.log(String(value), {force: true});
-  }
+    this.log(String(value), { force: true });
+  };
 
-  list(title: string, items: Array<string>, hints?: Object) {
+  list = (
+    title: string,
+    items: Array<string>,
+    hints?: Record<string, string>
+  ) => {
     /**
      * Because in the original Yarn code list() is called starting with a "key:
      * string" argument that is ignored, we don't assume that a title has been
      * passed in or is a valid string, to avoid creating a breaking change.
      */
-    this._logCategory('list', 'magenta', typeof title === 'string' ? this.format.bold(title) : '');
+    this._logCategory(
+      "list",
+      "magenta",
+      typeof title === "string" ? this.format.bold(title) : ""
+    );
 
     const gutterWidth = (this._lastCategorySize || 2) - 1;
 
     if (hints) {
       for (const item of items) {
-        this._log(`${' '.repeat(gutterWidth)}- ${this.format.bold(item)}`);
-        this._log(`  ${' '.repeat(gutterWidth)} ${hints[item]}`);
+        this._log(`${" ".repeat(gutterWidth)}- ${this.format.bold(item)}`);
+        this._log(`  ${" ".repeat(gutterWidth)} ${hints[item]}`);
       }
     } else {
       for (const item of items) {
-        this._log(`${' '.repeat(gutterWidth)}- ${item}`);
+        this._log(`${" ".repeat(gutterWidth)}- ${item}`);
       }
     }
-  }
+  };
 
-  header(command: string, pkg: Package) {
+  header = (command: string, pkg: Package) => {
     this.log(this.format.bold(`${pkg.name} ${command} v${pkg.version}`));
-  }
+  };
 
-  footer(showPeakMemory?: boolean) {
+  footer = (showPeakMemory?: boolean) => {
     this.stopProgress();
 
     const totalTime = (this.getTotalTime() / 1000).toFixed(2);
@@ -169,15 +169,15 @@ export default class ConsoleReporter extends BaseReporter {
       const peakMemory = (this.peakMemory / 1024 / 1024).toFixed(2);
       msg += ` Peak memory usage ${peakMemory}MB.`;
     }
-    this.log(this._prependEmoji(msg, '✨'));
-  }
+    this.log(this._prependEmoji(msg, "✨"));
+  };
 
-  log(msg: string, {force = false}: {force?: boolean} = {}) {
+  log = (msg: string, { force = false }: { force?: boolean } = {}) => {
     this._lastCategorySize = 0;
-    this._log(msg, {force});
-  }
+    this._log(msg, { force });
+  };
 
-  _log(msg: string, {force = false}: {force?: boolean} = {}) {
+  _log(msg: string, { force = false }: { force?: boolean } = {}) {
     if (this.isSilent && !force) {
       return;
     }
@@ -185,85 +185,94 @@ export default class ConsoleReporter extends BaseReporter {
     this.stdout.write(`${msg}\n`);
   }
 
-  success(msg: string) {
-    this._logCategory('success', 'green', msg);
-  }
+  success = (msg: string) => {
+    this._logCategory("success", "green", msg);
+  };
 
-  error(msg: string) {
+  error = (msg: string) => {
     clearLine(this.stderr);
-    this.stderr.write(`${this.format.red('error')} ${msg}\n`);
-  }
+    this.stderr.write(`${this.format.red("error")} ${msg}\n`);
+  };
 
-  info(msg: string) {
-    this._logCategory('info', 'blue', msg);
-  }
+  info = (msg: string) => {
+    this._logCategory("info", "blue", msg);
+  };
 
-  command(command: string) {
+  command = (command: string) => {
     this.log(this.format.dim(`$ ${command}`));
-  }
+  };
 
-  warn(msg: string) {
+  warn = (msg: string) => {
     clearLine(this.stderr);
-    this.stderr.write(`${this.format.yellow('warning')} ${msg}\n`);
-  }
+    this.stderr.write(`${this.format.yellow("warning")} ${msg}\n`);
+  };
 
-  question(question: string, options?: QuestionOptions = {}): Promise<string> {
+  question = (
+    question: string,
+    options: QuestionOptions = {}
+  ): Promise<string> => {
     if (!process.stdout.isTTY) {
-      return Promise.reject(new Error("Can't answer a question unless a user TTY"));
+      return Promise.reject(
+        new Error("Can't answer a question unless a user TTY")
+      );
     }
 
     return new Promise((resolve, reject) => {
       read(
         {
-          prompt: `${this.format.dim('question')} ${question}: `,
+          prompt: `${this.format.dim("question")} ${question}: `,
           silent: !!options.password,
           output: this.stdout,
           input: this.stdin,
         },
         (err, answer) => {
           if (err) {
-            if (err.message === 'canceled') {
+            if (err.message === "canceled") {
               process.exitCode = 1;
             }
             reject(err);
           } else {
             if (!answer && options.required) {
-              this.error(this.lang('answerRequired'));
+              this.error(this.lang("answerRequired"));
               resolve(this.question(question, options));
             } else {
               resolve(answer);
             }
           }
-        },
+        }
       );
     });
-  }
+  };
   // handles basic tree output to console
-  tree(key: string, trees: Trees, {force = false}: {force?: boolean} = {}) {
-    this.stopProgress();
-    //
-    if (this.isSilent && !force) {
-      return;
-    }
-    const output = ({name, children, hint, color}, titlePrefix, childrenPrefix) => {
-      const formatter = this.format;
-      const out = getFormattedOutput({
-        prefix: titlePrefix,
-        hint,
-        color,
-        name,
-        formatter,
-      });
-      this.stdout.write(out);
+  // tree(key: string, trees: Trees, { force = false }: { force?: boolean } = {}) {
+  //   this.stopProgress();
+  //   //
+  //   if (this.isSilent && !force) {
+  //     return;
+  //   }
+  //   const output = (
+  //     { name, children, hint, color }: TreeState,
+  //     titlePrefix: string,
+  //     childrenPrefix: string
+  //   ) => {
+  //     const formatter = this.format;
+  //     const out = getFormattedOutput({
+  //       prefix: titlePrefix,
+  //       hint,
+  //       color,
+  //       name,
+  //       formatter,
+  //     });
+  //     this.stdout.write(out);
 
-      if (children && children.length) {
-        recurseTree(sortTrees(children), childrenPrefix, output);
-      }
-    };
-    recurseTree(sortTrees(trees), '', output);
-  }
+  //     if (children && children.length) {
+  //       recurseTree(sortTrees(children), childrenPrefix, output);
+  //     }
+  //   };
+  //   recurseTree(sortTrees(trees), "", output);
+  // }
 
-  activitySet(total: number, workers: number): ReporterSpinnerSet {
+  activitySet = (total: number, workers: number): ReporterSpinnerSet => {
     if (!this.isTTY || this.noProgress) {
       return super.activitySet(total, workers);
     }
@@ -272,7 +281,7 @@ export default class ConsoleReporter extends BaseReporter {
     const reporterSpinners = this._spinners;
 
     for (let i = 1; i < workers; i++) {
-      this.log('');
+      this.log("");
     }
 
     for (let i = 0; i < workers; i++) {
@@ -280,16 +289,18 @@ export default class ConsoleReporter extends BaseReporter {
       reporterSpinners.add(spinner);
       spinner.start();
 
-      let prefix: ?string = null;
+      let prefix: string | undefined;
       let current = 0;
       const updatePrefix = () => {
-        spinner.setPrefix(`${this.format.dim(`[${current === 0 ? '-' : current}/${total}]`)} `);
+        spinner.setPrefix(
+          `${this.format.dim(`[${current === 0 ? "-" : current}/${total}]`)} `
+        );
       };
       const clear = () => {
-        prefix = null;
+        prefix = undefined;
         current = 0;
         updatePrefix();
-        spinner.setText('waiting...');
+        spinner.setText("waiting...");
       };
       clear();
 
@@ -326,13 +337,17 @@ export default class ConsoleReporter extends BaseReporter {
         readline.moveCursor(this.stdout, 0, -workers + 1);
       },
     };
-  }
+  };
 
-  activity(): ReporterSpinner {
+  activity = (): ReporterSpinner => {
     if (!this.isTTY || this.isSilent || isCI) {
       return {
-        tick() {},
-        end() {},
+        tick: () => {
+          /*noop*/
+        },
+        end: () => {
+          /*noop*/
+        },
       };
     }
     const reporterSpinners = this._spinners;
@@ -352,11 +367,17 @@ export default class ConsoleReporter extends BaseReporter {
         reporterSpinners.delete(spinner);
       },
     };
-  }
+  };
 
-  select(header: string, question: string, options: Array<ReporterSelectOption>): Promise<string> {
+  select = (
+    header: string,
+    question: string,
+    options: Array<ReporterSelectOption>
+  ): Promise<string> => {
     if (!this.isTTY) {
-      return Promise.reject(new Error("Can't answer a question unless a user TTY"));
+      return Promise.reject(
+        new Error("Can't answer a question unless a user TTY")
+      );
     }
 
     const rl = readline.createInterface({
@@ -378,7 +399,7 @@ export default class ConsoleReporter extends BaseReporter {
       }
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.info(header);
 
       for (let i = 0; i < questions.length; i++) {
@@ -386,17 +407,17 @@ export default class ConsoleReporter extends BaseReporter {
       }
 
       const ask = () => {
-        rl.question(`${question}: `, input => {
+        rl.question(`${question}: `, (input) => {
           let index = toIndex(input);
 
           if (isNaN(index)) {
-            this.log('Not a number');
+            this.log("Not a number");
             ask();
             return;
           }
 
           if (index <= 0 || index > options.length) {
-            this.log('Outside answer range');
+            this.log("Outside answer range");
             ask();
             return;
           }
@@ -410,17 +431,17 @@ export default class ConsoleReporter extends BaseReporter {
 
       ask();
     });
-  }
+  };
 
-  progress(count: number): () => void {
+  progress = (count: number): (() => void) => {
     if (this.noProgress || count <= 0) {
-      return function() {
+      return function () {
         // noop
       };
     }
 
     if (!this.isTTY || this.isSilent || isCI) {
-      return function() {
+      return function () {
         // TODO what should the behaviour here be? we could buffer progress messages maybe
       };
     }
@@ -428,28 +449,38 @@ export default class ConsoleReporter extends BaseReporter {
     // Clear any potentially old progress bars
     this.stopProgress();
 
-    const bar = (this._progressBar = new Progress(count, this.stderr, (progress: Progress) => {
-      if (progress === this._progressBar) {
-        this._progressBar = null;
+    const bar = (this._progressBar = new Progress(
+      count,
+      this.stderr,
+      (progress: Progress) => {
+        if (progress === this._progressBar) {
+          this._progressBar = undefined;
+        }
       }
-    }));
+    ));
 
     bar.render();
 
-    return function() {
+    return function () {
       bar.tick();
     };
-  }
+  };
 
-  stopProgress() {
+  stopProgress = () => {
     if (this._progressBar) {
       this._progressBar.stop();
     }
-  }
+  };
 
-  async prompt<T>(message: string, choices: Array<*>, options?: PromptOptions = {}): Promise<Array<T>> {
+  async prompt<T>(
+    message: string,
+    choices: Array<unknown>,
+    options: PromptOptions = {}
+  ): Promise<Array<T>> {
     if (!process.stdout.isTTY) {
-      return Promise.reject(new Error("Can't answer a question unless a user TTY"));
+      return Promise.reject(
+        new Error("Can't answer a question unless a user TTY")
+      );
     }
 
     let pageSize;
@@ -463,14 +494,15 @@ export default class ConsoleReporter extends BaseReporter {
       terminal: true,
     });
 
-    // $FlowFixMe: Need to update the type of Inquirer
     const prompt = inquirer.createPromptModule({
       input: this.stdin,
       output: this.stdout,
     });
 
-    const {name = 'prompt', type = 'input', validate} = options;
-    const answers: InquirerResponses<string, T> = await prompt([{name, type, message, choices, pageSize, validate}]);
+    const { name = "prompt", type = "input", validate } = options;
+    const answers: Answers = await prompt([
+      { name, type, message, choices, pageSize, validate },
+    ]);
 
     rl.close();
 

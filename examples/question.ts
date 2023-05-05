@@ -1,9 +1,7 @@
-/* @noflow */
-/* eslint-disable flowtype/require-return-type */
-const report = require('../dist');
+import report from "../dist";
 
 async function askQuestions() {
-  let answer = await report.question('What do you want?');
+  let answer = await report.question("What do you want?");
   report.info(`Sorry, I don't have ${answer}`);
 
   answer = await report.question(`What's your password? (required)`, {

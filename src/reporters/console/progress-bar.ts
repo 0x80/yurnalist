@@ -1,15 +1,20 @@
-/* @flow */
+import type { Stdout } from "../types";
+import { clearLine, toStartOfLine } from "./utils";
 
-import type {Stdout} from '../types.js';
-import {clearLine, toStartOfLine} from './util.js';
+const CHARS = ["#", "-"] as const;
 
 export default class ProgressBar {
-  constructor(total: number, stdout: Stdout = process.stderr, callback: ?(progressBar: ProgressBar) => void) {
+  constructor(
+    total: number,
+    stdout: Stdout = process.stderr,
+    callback?: (progressBar: ProgressBar) => void
+  ) {
     this.stdout = stdout;
     this.total = total;
-    this.chars = ProgressBar.bars[0];
+
     this.delay = 60;
     this.curr = 0;
+    this.width = 10; // not sure what to pick here
     this._callback = callback;
     clearLine(stdout);
   }
@@ -18,12 +23,9 @@ export default class ProgressBar {
   curr: number;
   total: number;
   width: number;
-  chars: [string, string];
   delay: number;
-  id: ?TimeoutID;
-  _callback: ?(progressBar: ProgressBar) => void;
-
-  static bars = [['#', '-']];
+  id?: NodeJS.Timeout;
+  _callback?: (progressBar: ProgressBar) => void;
 
   tick() {
     if (this.curr >= this.total) {
@@ -41,7 +43,7 @@ export default class ProgressBar {
   cancelTick() {
     if (this.id) {
       clearTimeout(this.id);
-      this.id = null;
+      this.id = undefined;
     }
   }
 
@@ -67,12 +69,11 @@ export default class ProgressBar {
     let bar = ` ${this.curr}/${this.total}`;
 
     // calculate size of actual bar
-    // $FlowFixMe: investigate process.stderr.columns flow error
     const availableSpace = Math.max(0, this.stdout.columns - bar.length - 3);
     const width = Math.min(this.total, availableSpace);
     const completeLength = Math.round(width * ratio);
-    const complete = this.chars[0].repeat(completeLength);
-    const incomplete = this.chars[1].repeat(width - completeLength);
+    const complete = CHARS[0].repeat(completeLength);
+    const incomplete = CHARS[1].repeat(width - completeLength);
     bar = `[${complete}${incomplete}]${bar}`;
 
     toStartOfLine(this.stdout);

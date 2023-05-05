@@ -1,10 +1,7 @@
-/* @flow */
-
-import tty from 'tty';
-import type {Stdout} from '../types.js';
-
-const readline = require('readline');
-const {supportsColor} = require('chalk');
+import { supportsColor } from "chalk";
+import readline from "node:readline";
+import tty from "node:tty";
+import type { Stdout } from "../types";
 
 const CLEAR_WHOLE_LINE = 0;
 const CLEAR_RIGHT_OF_CURSOR = 1;
@@ -13,7 +10,7 @@ export function clearLine(stdout: Stdout) {
   if (!supportsColor) {
     if (stdout instanceof tty.WriteStream) {
       if (stdout.columns > 0) {
-        stdout.write(`\r${' '.repeat(stdout.columns - 1)}`);
+        stdout.write(`\r${" ".repeat(stdout.columns - 1)}`);
       }
       stdout.write(`\r`);
     }
@@ -26,7 +23,7 @@ export function clearLine(stdout: Stdout) {
 
 export function toStartOfLine(stdout: Stdout) {
   if (!supportsColor) {
-    stdout.write('\r');
+    stdout.write("\r");
     return;
   }
 

@@ -1,50 +1,48 @@
 # Yurnalist
 
-An elegant console reporter, borrowed from [Yarn](https://yarnpkg.com).
-
-## Introduction
-
-Pretty console output makes developers happy and Yarn is doing a nice job.
-Yurnalist takes the internal console reporter code from Yarn and makes it
-available for use in other Node.js applications.
-
-The current version is based on code from Yarn v1.13.0.
+An elegant console reporter borrowed from [Yarn](https://yarnpkg.com). Yurnalist
+took the console reporter code from Yarn v1.13, and made it available for use in
+other Node.js applications. The code has since been modernized with using TS and
+other upgrades.
 
 Yurnalist can be used to report many different things besides simple messages.
 
+## 3.0 Changes
+
+- Converted JS + Flow to modern Typescript
+- Build target ESM + CJS
+- Replaced Yarn with PNPM
+- Replaced Jest with Vitest
+- Removed lots of unnecessary dependencies and files
+- Removed Babel in favor of tsup
+- Simplified ESLint config
+- Removed tree, as I didn't figure out how to convert it to TS
+- Removed messages strings
+
 ### Features
 
-* log, info, warn, succes, error & command messages
-* progress bars
-* activity spinners
-* process steps
-* object inspection
-* lists
-* emojis
-* trees
-* tables
-* user question
-* user select
-* program header & footer
+- log, info, warn, succes, error & command messages
+- progress bars
+- activity spinners
+- process steps
+- object inspection
+- lists
+- emojis
+- tables
+- user question
+- user select
+- program header & footer
 
 ## Install
 
-```sh
-yarn add yurnalist
-```
-
-Or if your prefer NPM
-
-```sh
-npm install yurnalist
-```
+Run `pnpm add yurnalist`, or use `yarn` or `npm` if you prefer that.
 
 ## How to use
 
 Here is an example showing a combination of different reporter API functions.
 
-```javascript
-import report from 'yurnalist'
+```js
+import report from "yurnalist";
 
 /* A function to fake some async task */
 function waitNumberOfSecs(secs) {
@@ -52,19 +50,19 @@ function waitNumberOfSecs(secs) {
 }
 
 async function fetchSomething() {
-  report.info('Please wait while I fetch something for you.');
-  report.warn('It might take a little while though.');
+  report.info("Please wait while I fetch something for you.");
+  report.warn("It might take a little while though.");
 
   const spinner = report.activity();
-  spinner.tick('I am on it!');
+  spinner.tick("I am on it!");
 
   try {
     await waitNumberOfSecs(1);
-    spinner.tick('Still busy...');
+    spinner.tick("Still busy...");
     await waitNumberOfSecs(1);
-    spinner.tick('Almost there...');
+    spinner.tick("Almost there...");
     await waitNumberOfSecs(1);
-    report.success('Done!');
+    report.success("Done!");
   } catch (err) {
     report.error(err);
   }
@@ -73,7 +71,6 @@ async function fetchSomething() {
 }
 
 fetchSomething();
-
 ```
 
 ## Requirements
@@ -112,7 +109,7 @@ type ReporterOptions = {
   noProgress?: boolean,
   silent?: boolean,
   nonInteractive?: boolean,
-  peekMemoryCounter?: boolean
+  peekMemoryCounter?: boolean,
 };
 ```
 
@@ -128,8 +125,8 @@ const defaults = {
   noProgress: false,
   silent: false,
   nonInteractive: false,
-  peekMemoryCounter: false
-}
+  peekMemoryCounter: false,
+};
 ```
 
 The peekMemoryCounter is disabled by default. If you enable it, you'll have to
@@ -155,8 +152,8 @@ the [tests](./__tests__).
 
 The following functions are available:
 
-
 ### table
+
 ### step
 
 ### inspect( thing: mixed )
@@ -183,7 +180,6 @@ list My grocery list
    - eggs
    - bamischijf
 ```
-
 
 Example with hints:
 
@@ -215,20 +211,35 @@ list My grocery list
 ```
 
 ### header
+
 ### footer
+
 ### log
+
 ### success
+
 ### error
+
 ### info
+
 ### command
+
 ### warn
+
 ### question
+
 ### tree
+
 ### activitySet
+
 ### activity
+
 ### select
+
 ### progress
+
 ### close
+
 ### createReporter
 
 ## Language
@@ -248,8 +259,8 @@ allowed in the application environment.
 
 Check:
 
-* [node-emoji](https://github.com/omnidan/node-emoji)
-* [Emoji cheat sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet/)
+- [node-emoji](https://github.com/omnidan/node-emoji)
+- [Emoji cheat sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet/)
 
 ## Credits
 

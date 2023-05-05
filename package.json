@@ -1,86 +1,56 @@
 {
   "name": "yurnalist",
   "version": "3.0.0-alpha-1",
-  "description": "Elegant console output, borrowed from Yarn",
+  "description": "Elegant console output",
+  "packageManager": "pnpm@8",
+  "type": "module",
+  "module": "dist/index.js",
   "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
   "repository": "https://github.com/0x80/yurnalist",
   "author": "Thijs Koerselman",
-  "license": "BSD-2-Clause",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
-    "chalk": "^2.4.2",
-    "inquirer": "^7.0.0",
-    "is-ci": "^2.0.0",
-    "read": "^1.0.7",
-    "strip-ansi": "^5.2.0"
+    "chalk": "^5.2.0",
+    "inquirer": "^9.2.1",
+    "is-ci": "^3.0.1",
+    "read": "^2.1.0",
+    "strip-ansi": "^7.0.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^10.0.1",
-    "babel-plugin-array-includes": "^2.0.3",
-    "babel-plugin-inline-import": "^3.0.0",
-    "babel-plugin-transform-builtin-extend": "^1.1.2",
-    "babel-plugin-transform-inline-imports-commonjs": "^1.0.0",
-    "babel-plugin-transform-runtime": "^6.4.3",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-flow": "^6.23.0",
-    "babel-preset-stage-0": "^6.0.0",
-    "babel-runtime": "^6.26.0",
-    "babylon": "^6.5.0",
-    "deep-equal": "^1.1.0",
-    "detect-indent": "^6.0.0",
-    "eslint": "^5.10.0",
-    "eslint-config-fb-strict": "^23.2.0",
-    "eslint-plugin-babel": "^5.0.0",
-    "eslint-plugin-flowtype": "^3.2.0",
-    "eslint-plugin-jasmine": "^2.6.2",
-    "eslint-plugin-jest": "^22.1.2",
-    "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-prefer-object-spread": "^1.2.1",
-    "eslint-plugin-prettier": "^3.0.0",
-    "eslint-plugin-react": "^7.1.0",
-    "eslint-plugin-relay": "^1.0.0",
-    "eslint-plugin-yarn-internal": "file:scripts/eslint-rules",
-    "flow-bin": "0.88.0",
-    "is-builtin-module": "^3.0.0",
-    "jest": "^23.6.0",
-    "mock-stdin": "^0.3.0",
-    "node-emoji": "^1.10.0",
-    "np": "^6.5.0",
-    "prettier": "^1.18.2",
-    "rimraf": "^3.0.0",
-    "semver": "^6.3.0"
+    "@types/inquirer": "^9.0.3",
+    "@types/is-ci": "^3.0.0",
+    "@types/node": "^20.0.0",
+    "@types/read": "^0.0.29",
+    "@typescript-eslint/eslint-plugin": "^5.59.2",
+    "@typescript-eslint/parser": "^5.59.2",
+    "eslint": "^8.39.0",
+    "mock-stdin": "^1.0.0",
+    "node-emoji": "^1.11.0",
+    "np": "^7.7.0",
+    "prettier": "^2.8.8",
+    "rimraf": "^5.0.0",
+    "tsup": "^6.7.0",
+    "type-fest": "^3.10.0",
+    "typescript": "^5.0.4",
+    "vitest": "^0.31.0"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=12.0.0"
   },
   "scripts": {
-    "test": "yarn lint && yarn test-only",
-    "test-only": "node --max_old_space_size=4096 node_modules/jest/bin/jest.js --verbose",
-    "test-coverage": "node --max_old_space_size=4096 node_modules/jest/bin/jest.js --coverage --verbose",
-    "lint": "eslint . && flow check",
-    "prettier": "eslint src examples __tests__ --fix",
-    "build": "babel src --out-dir dist",
-    "watch": "babel src --out-dir dist --watch",
-    "clean": "rimraf dist",
-    "prepublish": "npm run clean && npm run build"
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.js"
-    ],
-    "testEnvironment": "node",
-    "modulePathIgnorePatterns": [
-      "__tests__/fixtures/",
-      "packages/pkg-tests/pkg-tests-fixtures",
-      "dist/"
-    ],
-    "testPathIgnorePatterns": [
-      "__tests__/(fixtures|__mocks__)/",
-      "updates/",
-      "_(temp|mock|install|init|helpers).js$",
-      "packages/pkg-tests"
-    ]
+    "test": "vitest",
+    "lint": "eslint \"**/*.ts*\"",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "build": "tsup-node"
   },
   "keywords": [
     "ansi",

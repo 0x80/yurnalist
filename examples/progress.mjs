@@ -1,6 +1,7 @@
-import report from "../dist";
+import report from "../dist/index.js";
+/* eslint-env node */
 
-function waitNumSecs(secs: number) {
+function waitNumSecs(secs) {
   return new Promise((resolve) => setTimeout(resolve, secs * 1000));
 }
 

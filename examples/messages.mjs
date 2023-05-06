@@ -1,4 +1,4 @@
-import report from "../dist";
+import report from "../dist/index.js";
 
 report.log("A normal message without any decoration");
 report.info("An info message");

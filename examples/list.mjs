@@ -1,4 +1,4 @@
-import report from "../dist";
+import report from "../dist/index.js";
 
 const someList = ["bananas", "tulips", "eggs", "bamischijf"];
 

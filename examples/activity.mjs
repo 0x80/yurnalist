@@ -1,4 +1,4 @@
-import report from "../dist";
+import report from "../dist/index.js";
 /* A function to fake some async task */
 function doSomeWork(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));

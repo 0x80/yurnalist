@@ -1,4 +1,4 @@
-import report from "../dist";
+import report from "../dist/index.js";
 
 const anArray = ["some", "values", () => "hello", 3654, true];
 const anObject = {

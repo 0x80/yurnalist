@@ -1,4 +1,4 @@
-import report from "../dist";
+import report from "../dist/index.js";
 
 async function chooseLife() {
   const answer = await report.select("What do you choose?", "Your choice", [

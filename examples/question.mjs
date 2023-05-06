@@ -1,4 +1,4 @@
-import report from "../dist";
+import report from "../dist/index.js";
 
 async function askQuestions() {
   let answer = await report.question("What do you want?");

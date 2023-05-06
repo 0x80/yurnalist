@@ -211,6 +211,8 @@ export class ConsoleReporter extends BaseReporter {
     question: string,
     options: QuestionOptions = {}
   ): Promise<string> => {
+    console.log("+++ question", question, options);
+
     if (!process.stdout.isTTY) {
       return Promise.reject(
         new Error("Can't answer a question unless a user TTY")
@@ -226,6 +228,7 @@ export class ConsoleReporter extends BaseReporter {
           input: this.stdin,
         },
         (err, answer) => {
+          console.log("+++ callback, err, answer", err, answer);
           if (err) {
             if (err.message === "canceled") {
               process.exitCode = 1;
@@ -236,6 +239,7 @@ export class ConsoleReporter extends BaseReporter {
               this.error(this.lang("answerRequired"));
               resolve(this.question(question, options));
             } else {
+              console.log("+++ resolve answer", answer);
               resolve(answer);
             }
           }

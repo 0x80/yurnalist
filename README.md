@@ -7,6 +7,11 @@ other upgrades.
 
 Yurnalist can be used to report many different things besides simple messages.
 
+## 3.0 TODO
+
+- Question is broken now, it does not return the answer
+- tables?
+
 ## 3.0 Changes
 
 - Converted JS + Flow to modern Typescript

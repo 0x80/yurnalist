@@ -1,7 +1,8 @@
 import report from "../dist/index.js";
-/* A function to fake some async task */
-function doSomeWork(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+/* eslint-env node */
+
+function doSomeWork(secs = 1) {
+  return new Promise((resolve) => setTimeout(resolve, secs * 1000));
 }
 
 async function fetchSomething() {
@@ -12,11 +13,11 @@ async function fetchSomething() {
   spinner.tick("I am on it");
 
   try {
-    await doSomeWork(1000);
+    await doSomeWork();
     spinner.tick("Still busy");
-    await doSomeWork(1000);
+    await doSomeWork();
     spinner.tick("Almost there");
-    await doSomeWork(1000);
+    await doSomeWork();
     report.success("Done!");
   } catch (err) {
     report.error(err);
